@@ -249,10 +249,10 @@ void BaseRealSenseNode::publishTopics()
     setupPublishers();
     setupStreams();
     SetBaseStream();
-    registerAutoExposureROIOptions(_node_handle);
+ //   registerAutoExposureROIOptions(_node_handle);
     publishStaticTransforms();
     publishIntrinsics();
-    startMonitoring();
+  //  startMonitoring();
     publishServices();
     ROS_INFO_STREAM("RealSense Node Is Up!");
 }
@@ -406,9 +406,9 @@ void BaseRealSenseNode::readAndSetDynamicParam(ros::NodeHandle& nh1, std::shared
     if (*option_value < min_val) *option_value = min_val;
     if (*option_value > max_val) *option_value = max_val;
     
-    ddynrec->registerVariable<int>(
-        option_name, *option_value, [this, sensor, option_name](int new_value){set_auto_exposure_roi(option_name, sensor, new_value);},
-        "auto-exposure " + option_name + " coordinate", min_val, max_val);
+//    ddynrec->registerVariable<int>(
+//        option_name, *option_value, [this, sensor, option_name](int new_value){set_auto_exposure_roi(option_name, sensor, new_value);},
+//        "auto-exposure " + option_name + " coordinate", min_val, max_val);
 }
 
 void BaseRealSenseNode::registerAutoExposureROIOptions(ros::NodeHandle& nh)
