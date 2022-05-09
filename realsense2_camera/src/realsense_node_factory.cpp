@@ -376,6 +376,8 @@ void RealSenseNodeFactory::StartDevice()
 		case RS_L515_PID_PRE_PRQ:
 		case RS_L515_PID:
 		case RS_L535_PID:
+			//al3d
+		case AL3D_PID:
 			_realSenseNode = std::shared_ptr<BaseRealSenseNode>(new BaseRealSenseNode(nh, privateNh, _device, _serial_no));
 			break;
 		case RS_T265_PID:
