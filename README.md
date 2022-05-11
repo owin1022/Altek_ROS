@@ -41,7 +41,7 @@ LibRealSense2 supported version: v2.50.0 (see [realsense2_camera release notes](
         `vcpkg install realsense2:x64-windows` 
 
 
-   ### Step 2: Install Intel&reg; RealSense&trade; ROS from Sources
+   ### Step 2: Install Altek_ROS from Sources
    - Create a [catkin](http://wiki.ros.org/catkin#Installing_catkin) workspace
    *Ubuntu*
    ```bash
