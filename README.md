@@ -1,7 +1,7 @@
 # ROS Wrapper for Altek AL6100 depth camera Devices
 These are packages for using  Altek AL6100 depth cameras with ROS.
 
-This version supports Kinetic, Melodic and Noetic distributions of various ubuntu version.
+This version supports Kinetic, Melodic and Noetic based on various ubuntu distributions.
 
 
 ## Installation Instructions
