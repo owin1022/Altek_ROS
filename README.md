@@ -22,11 +22,11 @@ LibRealSense2 supported version: v2.50.0 (see [realsense2_camera release notes](
 
 
 
-* ### Method 1: The RealSense&trade; distribution:
+* ### Method 1: The Altek_ROS distribution:
      > This option is demonstrated in the .travis.yml file. It basically summerize the elaborate instructions in the following 2 steps:
 
 
-   ### Step 1: Install the latest Intel&reg; Altek SDK 1.0
+   ### Step 1: Install the latest Altek_ROS SDK 1.0
 
     *Ubuntu*
     
