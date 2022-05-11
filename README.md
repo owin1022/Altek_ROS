@@ -1,11 +1,8 @@
 # ROS Wrapper for Intel&reg; RealSense&trade; Devices
-These are packages for using Intel RealSense cameras (D400 series SR300 camera and T265 Tracking Module) with ROS.
+These are packages for using  Altek AL6100 depth cameras with ROS.
 
-This version supports Kinetic, Melodic and Noetic distributions.
+This version supports Kinetic, Melodic and Noetic distributions of various ubuntu version.
 
-For running in ROS2 environment please switch to the [ros2 branch](https://github.com/IntelRealSense/realsense-ros/tree/ros2-beta). </br>
-
-LibRealSense2 supported version: v2.50.0 (see [realsense2_camera release notes](https://github.com/IntelRealSense/realsense-ros/releases))
 
 ## Installation Instructions
 
