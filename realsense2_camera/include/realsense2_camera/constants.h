@@ -41,7 +41,7 @@ namespace realsense2_camera
     const uint16_t RS_L515_PID      = 0x0B64; // 
     const uint16_t RS_L535_PID      = 0x0b68;
     const uint16_t AL3D_PID      = 0x99AA;   //al3d
-    
+    const uint16_t AL3Di_PID      = 0x99BB;   //al3di
 
     const bool ALIGN_DEPTH             = false;
     const bool POINTCLOUD              = false;
