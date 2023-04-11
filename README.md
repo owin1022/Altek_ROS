@@ -52,7 +52,7 @@ This version supports Kinetic, Melodic and Noetic based on various ubuntu distri
    - Clone the latest Intel&reg; RealSense&trade; ROS from [here](https://github.com/intel-ros/realsense/releases) into 'catkin_ws/src/'
    ```bashrc
    git clone https://github.com/owin1022/Altek_ROS.git
-   cd realsense-ros/
+   cd Altek_ROS/
    git checkout `git tag | sort -V | grep -P "^2.\d+\.\d+" | tail -1`
    cd ..
    ```
