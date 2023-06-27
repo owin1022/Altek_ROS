@@ -1856,10 +1856,31 @@ void BaseRealSenseNode::setupStreams()
             active_sensors[module_name] = _sensors[profile.first];
         }
 
-        for (const std::pair<std::string, std::vector<rs2::stream_profile> >& sensor_profile : profiles)
+#if 1
+        // +-20230628, Abner, workaround for depth / RGB stream out of sync
+        for (auto it = profiles.rbegin(); it != profiles.rend(); it++)        
+        {
+            std::string module_name = it->first;
+            rs2::sensor sensor = active_sensors[module_name];
+            
+            ROS_INFO_STREAM("open " << rs2_stream_to_string(it->second.begin()->stream_type())
+              << " to " << module_name);
+            sensor.open(it->second);
+            sensor.start(_sensors_callback[module_name]);
+            if (sensor.is<rs2::depth_sensor>())
+            {
+                _depth_scale_meters = sensor.as<rs2::depth_sensor>().get_depth_scale();
+            }
+        }
+
+#else        
+        for (const std::pair<std::string, std::vector<rs2::stream_profile> >& sensor_profile : profiles)        
         {
             std::string module_name = sensor_profile.first;
             rs2::sensor sensor = active_sensors[module_name];
+            
+            ROS_INFO_STREAM("open " << rs2_stream_to_string(sensor_profile.second.begin()->stream_type())
+              << " to " << module_name);
             sensor.open(sensor_profile.second);
             sensor.start(_sensors_callback[module_name]);
             if (sensor.is<rs2::depth_sensor>())
@@ -1867,6 +1888,8 @@ void BaseRealSenseNode::setupStreams()
                 _depth_scale_meters = sensor.as<rs2::depth_sensor>().get_depth_scale();
             }
         }
+#endif
+
     }
     catch(const std::exception& ex)
     {
