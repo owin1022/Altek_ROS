@@ -856,7 +856,7 @@ void BaseRealSenseNode::setupDevice()
 
         ROS_INFO_STREAM("Device physical port: " << camera_id);
 
-        auto fw_ver = _dev.get_info(RS2_CAMERA_INFO_FIRMWARE_VERSION);
+        auto fw_ver = _dev.get_info(RS2_CAMERA_INFO_RECOMMENDED_FIRMWARE_VERSION);
         ROS_INFO_STREAM("Device FW version: " << fw_ver);
 
         auto pid = _dev.get_info(RS2_CAMERA_INFO_PRODUCT_ID);
