@@ -2587,7 +2587,7 @@ bool BaseRealSenseNode::getDeviceInfo(realsense2_camera::DeviceInfo::Request&,
 {
     res.device_name = _dev.supports(RS2_CAMERA_INFO_NAME) ? create_graph_resource_name(_dev.get_info(RS2_CAMERA_INFO_NAME)) : "";
     res.serial_number = _dev.supports(RS2_CAMERA_INFO_SERIAL_NUMBER) ? _dev.get_info(RS2_CAMERA_INFO_SERIAL_NUMBER) : "";
-    res.firmware_version = _dev.supports(RS2_CAMERA_INFO_FIRMWARE_VERSION) ? _dev.get_info(RS2_CAMERA_INFO_FIRMWARE_VERSION) : "";
+    res.firmware_version = _dev.supports(RS2_CAMERA_INFO_RECOMMENDED_FIRMWARE_VERSION) ? _dev.get_info(RS2_CAMERA_INFO_RECOMMENDED_FIRMWARE_VERSION) : "";
     res.usb_type_descriptor = _dev.supports(RS2_CAMERA_INFO_USB_TYPE_DESCRIPTOR) ? _dev.get_info(RS2_CAMERA_INFO_USB_TYPE_DESCRIPTOR) : "";
     res.firmware_update_id = _dev.supports(RS2_CAMERA_INFO_FIRMWARE_UPDATE_ID) ? _dev.get_info(RS2_CAMERA_INFO_FIRMWARE_UPDATE_ID) : "";
 
