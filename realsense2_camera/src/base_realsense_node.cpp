@@ -999,6 +999,15 @@ void BaseRealSenseNode::setupPublishers()
             {
                 _pointcloud_publisher = _node_handle.advertise<sensor_msgs::PointCloud2>("depth/color/points", 1);
             }
+
+			if (stream == COLOR)
+            {
+				std::stringstream al_data_raw;
+				al_data_raw  << stream_name << "/ai_data";
+                _ai_data_publishers[stream] = std::make_shared<ros::Publisher>(_node_handle.advertise<realsense2_camera::AIData>(al_data_raw.str(), 1));
+
+                ROS_INFO_STREAM("Start publisher ai_data name :" << al_data_raw.str());
+            }
         }
     }
 
@@ -1862,6 +1871,18 @@ void BaseRealSenseNode::setupStreams()
         {
             std::string module_name = it->first;
             rs2::sensor sensor = active_sensors[module_name];
+
+            _publish_al3d_ai = false;
+            
+            if(sensor.is<rs2::color_sensor>())
+            {
+                if (sensor.supports(RS2_OPTION_AL3D_AI_Enable))
+                {
+                    _publish_al3d_ai = true;
+                    sensor.set_option(RS2_OPTION_AL3D_AI_Enable, 1); // enable ai
+                    ROS_INFO_STREAM("set AI enable :" << sensor.get_option(RS2_OPTION_AL3D_AI_Enable));
+                }
+            }
             
             ROS_INFO_STREAM("open " << rs2_stream_to_string(it->second.begin()->stream_type())
               << " to " << module_name);
@@ -2455,6 +2476,12 @@ void BaseRealSenseNode::publishFrame(rs2::frame f, const ros::Time& t,
         auto& cam_info = camera_info.at(stream);
         publishMetadata(f, t, cam_info.header.frame_id);
     }
+
+    if (f.is<rs2::video_frame>())
+    {
+        auto& cam_info = camera_info.at(stream);
+        publishAIdata(f, t, cam_info.header.frame_id);
+    }
 }
 
 void BaseRealSenseNode::publishMetadata(rs2::frame f, const ros::Time& header_time, const std::string& frame_id)
@@ -2492,6 +2519,32 @@ void BaseRealSenseNode::publishMetadata(rs2::frame f, const ros::Time& header_ti
             }
             json_data << "}";
             msg.json_data = json_data.str();
+            md_publisher->publish(msg);
+        }
+    }
+}
+
+void BaseRealSenseNode::publishAIdata(rs2::frame f, const ros::Time& header_time, const std::string& frame_id)
+{
+    stream_index_pair stream = {f.get_profile().stream_type(), f.get_profile().stream_index()};    
+
+    if (_ai_data_publishers.find(stream) != _ai_data_publishers.end())
+    {
+        auto& md_publisher = _ai_data_publishers.at(stream);
+        
+        if (0 != md_publisher->getNumSubscribers())
+        {
+            realsense2_camera::AIData msg;
+            msg.frame_number = f.get_frame_number();
+            auto sn = _dev.get_info(RS2_CAMERA_INFO_SERIAL_NUMBER);
+            memcpy(&msg.sn_data[0], sn, msg.sn_data.size());
+            
+            if(_publish_al3d_ai)
+            {
+                auto ai_results_ptr = f.get_al3d_ai_results();
+                memcpy(&msg.ai_data[0], (char*)ai_results_ptr,  msg.ai_data.size());
+            }
+            
             md_publisher->publish(msg);
         }
     }

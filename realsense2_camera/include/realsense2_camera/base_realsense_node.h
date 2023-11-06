@@ -6,6 +6,7 @@
 #include "realsense2_camera/realsense_node_factory.h"
 #include <realsense2_camera/DeviceInfo.h>
 #include "realsense2_camera/Metadata.h"
+#include "realsense2_camera/AIData.h"
 #include <ddynamic_reconfigure/ddynamic_reconfigure.h>
 
 #include <diagnostic_updater/diagnostic_updater.h>
@@ -228,6 +229,7 @@ namespace realsense2_camera
                           const std::map<rs2_stream, std::string>& encoding,
                           bool copy_data_from_frame = true);
         void publishMetadata(rs2::frame f, const ros::Time& header_time, const std::string& frame_id);
+        void publishAIdata(rs2::frame f, const ros::Time& header_time, const std::string& frame_id);
         bool getEnabledProfile(const stream_index_pair& stream_index, rs2::stream_profile& profile);
 
         void publishAlignedDepthToOthers(rs2::frameset frames, const ros::Time& t);
@@ -292,6 +294,7 @@ namespace realsense2_camera
         std::map<rs2_stream, int> _image_format;
         std::map<stream_index_pair, ros::Publisher> _info_publisher;
         std::map<stream_index_pair, std::shared_ptr<ros::Publisher>> _metadata_publishers;
+        std::map<stream_index_pair, std::shared_ptr<ros::Publisher>> _ai_data_publishers;
         std::map<stream_index_pair, cv::Mat> _image;
         std::map<rs2_stream, std::string> _encoding;
 
@@ -307,6 +310,7 @@ namespace realsense2_camera
         bool _sync_frames;
         bool _pointcloud;
         bool _publish_odom_tf;
+        bool _publish_al3d_ai;
         imu_sync_method _imu_sync_method;
         std::string _filters_str;
         stream_index_pair _pointcloud_texture;

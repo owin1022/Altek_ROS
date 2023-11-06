@@ -70,6 +70,7 @@ add_message_files(
     IMUInfo.msg
     Extrinsics.msg
     Metadata.msg
+    AIData.msg
     )
 
 add_service_files(
