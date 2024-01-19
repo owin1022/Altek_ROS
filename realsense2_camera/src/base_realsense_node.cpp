@@ -748,6 +748,8 @@ void BaseRealSenseNode::getParameters()
 
     _pnh.param("json_file_path", _json_file_path, std::string(""));
 
+	_pnh.param("publish_ai", _enable_publish_al3d_ai, true);
+
     for (auto& stream : IMAGE_STREAMS)
     {
         std::string param_name(_stream_name[stream.first] + "_width");
@@ -2479,8 +2481,13 @@ void BaseRealSenseNode::publishFrame(rs2::frame f, const ros::Time& t,
 
     if (f.is<rs2::video_frame>())
     {
-        auto& cam_info = camera_info.at(stream);
-        publishAIdata(f, t, cam_info.header.frame_id);
+		_pnh.getParam("publish_ai", _enable_publish_al3d_ai);
+		
+		if(_enable_publish_al3d_ai)
+		{	
+	        auto& cam_info = camera_info.at(stream);
+	        publishAIdata(f, t, cam_info.header.frame_id);
+		}
     }
 }
 

@@ -311,6 +311,7 @@ namespace realsense2_camera
         bool _pointcloud;
         bool _publish_odom_tf;
         bool _publish_al3d_ai;
+        bool _enable_publish_al3d_ai;
         imu_sync_method _imu_sync_method;
         std::string _filters_str;
         stream_index_pair _pointcloud_texture;
