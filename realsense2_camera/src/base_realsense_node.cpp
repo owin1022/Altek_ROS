@@ -1006,7 +1006,7 @@ void BaseRealSenseNode::setupPublishers()
             {
 				std::stringstream al_data_raw;
 				al_data_raw  << stream_name << "/ai_data";
-                _ai_data_publishers[stream] = std::make_shared<ros::Publisher>(_node_handle.advertise<realsense2_camera::AIData>(al_data_raw.str(), 1));
+                _ai_data_publishers[stream] = std::make_shared<ros::Publisher>(_node_handle.advertise<realsense2_camera::QrCodeList>(al_data_raw.str(), 1));
 
                 ROS_INFO_STREAM("Start publisher ai_data name :" << al_data_raw.str());
             }
@@ -2537,22 +2537,45 @@ void BaseRealSenseNode::publishAIdata(rs2::frame f, const ros::Time& header_time
 
     if (_ai_data_publishers.find(stream) != _ai_data_publishers.end())
     {
-        auto& md_publisher = _ai_data_publishers.at(stream);
+        auto& ai_publisher = _ai_data_publishers.at(stream);
         
-        if (0 != md_publisher->getNumSubscribers())
+        if (0 != ai_publisher->getNumSubscribers())
         {
-            realsense2_camera::AIData msg;
-            msg.frame_number = f.get_frame_number();
-            auto sn = _dev.get_info(RS2_CAMERA_INFO_SERIAL_NUMBER);
-            memcpy(&msg.sn_data[0], sn, msg.sn_data.size());
-            
+            realsense2_camera::QrCodeList msg_qr_list;
+
             if(_publish_al3d_ai)
             {
+                AI_INFO ai_info;
+                
                 auto ai_results_ptr = f.get_al3d_ai_results();
-                memcpy(&msg.ai_data[0], (char*)ai_results_ptr,  msg.ai_data.size());
+                memcpy(&ai_info, (char*)ai_results_ptr, sizeof(ai_info));
+
+                msg_qr_list.header.frame_id = frame_id;
+                msg_qr_list.header.stamp = header_time;
+                msg_qr_list.list.clear();            
+
+                if(ai_info.num > 0)
+                {
+                    AI_DATA ai_data;
+                    realsense2_camera::QrCode msg_qr;
+                    int ai_box_info_start = 0;
+
+                    for(uint32_t i = 0; i < ai_info.num; i++)
+                    {   
+                        memcpy((char*)&ai_data, &ai_info.data[ai_box_info_start], sizeof(ai_data));
+                        msg_qr.index = 0;
+                        msg_qr.x = ai_data.x/1000;
+                        msg_qr.y = ai_data.y/1000;
+                        msg_qr.z = ai_data.z/1000;
+                        msg_qr.theta = ai_data.degree;
+                        msg_qr.distance = ai_data.distance;
+                        msg_qr_list.list.push_back(msg_qr);
+                        ai_box_info_start += sizeof(ai_data);
+                    }
+                }
             }
             
-            md_publisher->publish(msg);
+            ai_publisher->publish(msg_qr_list);
         }
     }
 }

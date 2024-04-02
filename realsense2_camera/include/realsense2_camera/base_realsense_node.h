@@ -6,7 +6,8 @@
 #include "realsense2_camera/realsense_node_factory.h"
 #include <realsense2_camera/DeviceInfo.h>
 #include "realsense2_camera/Metadata.h"
-#include "realsense2_camera/AIData.h"
+#include "realsense2_camera/QrCode.h"
+#include "realsense2_camera/QrCodeList.h"
 #include <ddynamic_reconfigure/ddynamic_reconfigure.h>
 
 #include <diagnostic_updater/diagnostic_updater.h>
@@ -346,5 +347,23 @@ namespace realsense2_camera
         std::vector< unsigned int > _valid_pc_indices;
     };//end class
 
+    struct AI_DATA
+    {
+        uint16_t reserved_1[5];
+        uint16_t distance;
+        float    degree;
+        float    x;
+        float    y;
+        float    z; 
+        uint16_t reserved_2[9];
+    };
+
+    struct AI_INFO
+    {
+        uint32_t reserved_1;
+        uint32_t num;
+        uint64_t reserved_2;
+        uint8_t data[1000];
+    };         
 }
 

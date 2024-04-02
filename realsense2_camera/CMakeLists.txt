@@ -70,7 +70,8 @@ add_message_files(
     IMUInfo.msg
     Extrinsics.msg
     Metadata.msg
-    AIData.msg
+    QrCode.msg
+    QrCodeList.msg
     )
 
 add_service_files(
