@@ -2564,9 +2564,9 @@ void BaseRealSenseNode::publishAIdata(rs2::frame f, const ros::Time& header_time
                     {   
                         memcpy((char*)&ai_data, &ai_info.data[ai_box_info_start], sizeof(ai_data));
                         msg_qr.index = i;
-                        msg_qr.x = ai_data.x/1000;
-                        msg_qr.y = ai_data.y/1000;
-                        msg_qr.z = ai_data.z/1000;
+                        msg_qr.x = ai_data.x;
+                        msg_qr.y = ai_data.y;
+                        msg_qr.z = ai_data.z;
                         msg_qr.theta = ai_data.degree;
                         msg_qr.distance = static_cast<float>(ai_data.distance)/1000;
                         msg_qr_list.list.push_back(msg_qr);
